@@ -3,6 +3,8 @@ package config
 import (
 	"fmt"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type Info struct {
@@ -28,6 +30,11 @@ const (
 )
 
 func New() (*Info, error) {
+	err := godotenv.Load()
+	if err != nil {
+		return nil, fmt.Errorf("error loading .env file")
+	}
+
 	port := os.Getenv(portEnv)
 	if port == "" {
 		return nil, fmt.Errorf("%s environment variable required", portEnv)
